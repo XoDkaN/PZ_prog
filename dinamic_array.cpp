@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdexcept>
 #include"dinamic_array.h"
 
 dinamic_list::dinamic_list(int tsize) : date(new int[tsize]()), size(tsize) {}
@@ -16,9 +17,14 @@ void dinamic_list::print(){
 };
 
 void dinamic_list::set(int index, int value) {
-    if ((value >= -100 && value <= 100) && (index < size && index >= 0 )) {
-        date[index] = value;
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("set: index out of range");
     }
+    if (value < -100 || value > 100) {
+        throw std::invalid_argument("set: value out of range [-100, 100]");
+    }
+    date[index] = value;
+    
 }
 int dinamic_list::get(int index) const {
     if (index < size && index >= 0 ){
