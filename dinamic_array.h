@@ -1,6 +1,8 @@
 #ifndef DINAMIC_LIST_H
 #define DINAMIC_LIST_H
 
+#include <stdexcept>
+
 class dinamic_list{
     private:
         int* date;
