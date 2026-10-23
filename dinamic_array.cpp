@@ -1,4 +1,5 @@
 #include<iostream>
+#include <stdexcept>
 #include"dinamic_array.h"
 
 dinamic_list::dinamic_list(int tsize) : date(new int[tsize]()), size(tsize) {}
@@ -16,14 +17,21 @@ void dinamic_list::print(){
 };
 
 void dinamic_list::set(int index, int value) {
-    if ((value >= -100 && value <= 100) && (index < size && index >= 0 )) {
-        date[index] = value;
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("set: Индекс вышел за границы");
     }
+    if (value < -100 || value > 100) {
+        throw std::invalid_argument("set: Переменная должна принадлежать диапазону [-100, 100]");
+    }
+    date[index] = value;
+    
 }
 int dinamic_list::get(int index) const {
-    if (index < size && index >= 0 ){
-        return date[index];
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("get: Индекс вышел за границы");
     }
+    return date[index];
+
 }
 
 dinamic_list::dinamic_list(const dinamic_list& other) {
@@ -34,8 +42,9 @@ dinamic_list::dinamic_list(const dinamic_list& other) {
     }
 }
 void dinamic_list::pushBack(int value) {
-    if (value >= -100 && value <= 100) {
-        
+    if (value < -100 || value > 100) {
+        throw std::invalid_argument("pushBack: Переменная должна принадлежать диапазону [-100, 100]");
+    }
 
     int* newDate = new int[size + 1];
 
@@ -50,7 +59,7 @@ void dinamic_list::pushBack(int value) {
     date = newDate;
     size = size + 1;
 }
-}
+
 void dinamic_list::add(const dinamic_list& other) {
     for (int i = 0; i < size; ++i) {
         int otherValue = (i < other.size) ? other.date[i] : 0;

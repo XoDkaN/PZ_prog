@@ -3,7 +3,7 @@
 
 int main(){
     setlocale(LC_ALL,"Russian");
-    
+    try {
         std::wcout<<L"===== Создание и вывод ====="<<std::endl;
         dinamic_list a(3), b(3);
         a.set(0, 10); a.set(1, 20); a.set(2, 30);
@@ -47,7 +47,30 @@ int main(){
         std::cout << "f = "; f.print();      
         e.subtract(f);
         std::cout << "e.subtract(f) -> "; e.print();
-    
 
+        std::wcout<<L"===== Исключения ====="<<std::endl;
+        try {
+            a.set(5, 10);
+        }
+        catch (const std::out_of_range& e) {
+        std::cout << "a.set(5, 10): " << e.what() << "\n";}
+
+        try {
+            a.set(0, 500);
+        }
+        catch (const std::invalid_argument& e) {
+        std::cout << "a.set(0, 500): " << e.what() << "\n";}
+
+        try {
+            throw std::bad_alloc();
+        } 
+        catch (const std::bad_alloc& e) {
+        std::cout << "Caught bad_alloc: " << e.what() << "\n";
+        }
+
+    }
+    catch (const std::exception& e) {
+    std::wcout << L"Ошибка : " << e.what() << "\n";
+    }
     return 0;
 }
