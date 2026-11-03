@@ -97,6 +97,48 @@ int main(){
             } catch (const std::invalid_argument& e) {
                 std::cout << "Ошибка: " << e.what() << "\n";
             }
+        
+        std::cout<< "===== operator[] =====\n";
+        std::cout<<"a = "; a.print();
+        std::cout<< "a[1] = " << a[1]<<"\n";
+        try {
+            std::cout<< "a[10] = " << a[10]<<"\n";
+        } catch (const std::out_of_range& e) {
+                 std::cout << "Ошибка:" << e.what() << "\n";}   
+        std::cout<< "===== Операторы сравнения =====\n";
+        dinamic_list<int> s1(3), s2(3), s3(3), s4(5);
+        s1.set(0, 1); s1.set(1, 2); s1.set(2, 3);
+        s2.set(0, 1); s2.set(1, 2); s2.set(2, 3);
+        s3.set(0, 1); s3.set(1, 2); s3.set(2, 1); 
+        s4.set(0, 1); s4.set(1, 2); s4.set(2, 3); s4.set(3, 4); s4.set(4, 5);
+        
+        std::cout<<"s1 = "; s1.print();
+        std::cout<<"s2 = "; s2.print();
+        std::cout<<"s3 = "; s3.print();
+        std::cout<<"s4 = "; s4.print();
+
+        std::cout<< "s1 == s2: " << (s1==s2) <<"\n";
+        std::cout<< "s1 == s3: " << (s1==s3) <<"\n";
+        std::cout<< "s1 == s4: " << (s1==s4) <<"\n";
+        std::cout<< "s1 != s3: " << (s1!=s3) <<"\n";
+        
+        std::cout<< "===== Арифметика =====\n";
+        std::cout<<"s1 = "; s1.print();
+        std::cout<<"s2 = "; s2.print();
+        std::cout<<"s3 = "; s3.print();
+        std::cout<<"s4 = "; s4.print();
+
+        std::cout<< "s1 += s3: " << (s1+=s3) <<"\n";
+        std::cout<< "s1 -= s3: " << (s1-=s3) <<"\n";
+        std::cout<< "s4 += s1: " << (s4+=s1) <<"\n";
+
+        std::cout<< "s1 += 5: " << (s1+=5) <<"\n";
+
+        std::cout<< "===== begin() и end() =====\n";
+        std::cout<<"s1 = "; s1.print();
+        for (const auto& x : s1) {
+            std::cout << x;
+        }
     }
     catch (const std::exception& e) {
     std::cout << "Ошибка : " << e.what() << "\n";

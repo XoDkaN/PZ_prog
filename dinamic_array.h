@@ -29,9 +29,44 @@ class dinamic_list{
         friend std::ostream& operator<<(std::ostream& os, const dinamic_list<U>& arr);
         template <typename U>
         double distance(const dinamic_list<U>& other);
-       
-        
-};
+        template <typename U>
+        bool operator==(const dinamic_list<U>& other) const;
+        template <typename U>
+        bool operator!=(const dinamic_list<U>& other) const;
+        dinamic_list& operator+=(const dinamic_list& other);
+        dinamic_list& operator-=(const dinamic_list& other);
+        dinamic_list& operator+=(const T& scalar);
+        dinamic_list& operator-=(const T& scalar);
+        class Proxy {
+            public:
+                Proxy(dinamic_list& list, int index) : list_(list), index_(index) {}
+
+                operator T() const { return list_.get(index_); }
+                Proxy& operator=(const T& value) {
+                    list_.set(index_, value);
+                    return *this;
+                }
+                Proxy& operator=(const Proxy& other) {
+                    return operator=(static_cast<T>(other));
+                }
+
+            private:
+                dinamic_list& list_;
+                int index_;
+            };
+
+            T operator[](int index) const { return get(index); }
+
+            Proxy operator[](int index) {
+                if (index >= size || index < 0)
+                    throw std::out_of_range("out_of_range");
+                return Proxy(*this, index);
+            }
+        T* begin()  { return data; }
+        T* end()    { return data + size; }
+        const T* begin() const { return data; }
+        const T* end()   const { return data + size; }
+        };
 
 template <typename T>
 dinamic_list<T>::dinamic_list(int tsize) : data(new T[tsize]()), size(tsize) {}
@@ -146,4 +181,54 @@ double dinamic_list<T>::distance(const dinamic_list<U>& other) {
         return std::sqrt(sum);
     }
 }
+template <typename T>
+template <typename U>
+bool dinamic_list<T>::operator==(const dinamic_list<U>& other) const {
+    if (size != other.size)
+        return false;
+    for (int i = 0; i < size; ++i) {
+        if (!(data[i] == other.data[i]))
+            return false;
+    }
+    return true;
+}
+
+template <typename T>
+template <typename U>
+bool dinamic_list<T>::operator!=(const dinamic_list<U>& other) const {
+    return !(*this == other);
+}
+
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator+=(const dinamic_list& other) {
+    add(other);
+    return *this;
+}
+
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator-=(const dinamic_list& other) {
+    subtract(other);
+    return *this;
+}
+
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator+=(const T& scalar) {
+    validate(scalar);
+    for (int i = 0; i < size; ++i) {
+        data[i] = data[i] + scalar;
+    }
+    return *this;
+}
+
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator-=(const T& scalar) {
+    validate(scalar);
+    for (int i = 0; i < size; ++i) {
+        data[i] = data[i] - scalar;
+    }
+    return *this;
+}
+
+
+
 #endif
