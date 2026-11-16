@@ -37,6 +37,10 @@ class dinamic_list{
         dinamic_list& operator-=(const dinamic_list& other);
         dinamic_list& operator+=(const T& scalar);
         dinamic_list& operator-=(const T& scalar);
+        dinamic_list& operator=(const dinamic_list& other);
+        dinamic_list& operator=(dinamic_list&& other) noexcept;
+        void swap(dinamic_list& other) noexcept;
+        dinamic_list(dinamic_list&& other) noexcept;
         class Proxy {
             public:
                 Proxy(dinamic_list& list, int index) : list_(list), index_(index) {}
@@ -67,6 +71,7 @@ class dinamic_list{
         const T* begin() const { return data; }
         const T* end()   const { return data + size; }
         };
+        
 
 template <typename T>
 dinamic_list<T>::dinamic_list(int tsize) : data(new T[tsize]()), size(tsize) {}
@@ -229,6 +234,42 @@ dinamic_list<T>& dinamic_list<T>::operator-=(const T& scalar) {
     return *this;
 }
 
+template <typename T>
+void dinamic_list<T>::swap(dinamic_list& other) noexcept {
+    std::swap(data, other.data);
+    std::swap(size, other.size);
+}
 
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator=(const dinamic_list& other) {
+    if (this == &other) return *this; 
+
+    dinamic_list<T> temp(other);      
+    swap(temp);                   
+    
+    return *this;                   
+}
+
+template <typename T>
+dinamic_list<T>::dinamic_list(dinamic_list&& other) noexcept 
+    : data(other.data), size(other.size) 
+{
+    other.data = nullptr;
+    other.size = 0;
+}
+
+template <typename T>
+dinamic_list<T>& dinamic_list<T>::operator=(dinamic_list&& other) noexcept {
+    if (this != &other) {         
+        delete[] data;           
+        
+        data = other.data;        
+        size = other.size;
+        
+        other.data = nullptr;     
+        other.size = 0;
+    }
+    return *this;                
+}
 
 #endif

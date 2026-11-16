@@ -139,6 +139,27 @@ int main(){
         for (const auto& x : s1) {
             std::cout << x;
         }
+
+        std::cout<< "===== Операторы присваивания =====\n";
+        dinamic_list<int> k1(3), k2(3), k3(3);
+        k1.set(0, 1); k1.set(1, 2); k1.set(2, 3);
+        dinamic_list<int> k1_copy(k1);
+        std::cout<<"k1 = "; k1.print();
+        std::cout<< "= Копирующее присваивание =\n";
+        k2 = k1;
+        std::cout<<"k2 = k1"<<std::endl; 
+        std::cout<<"k2 = "; k2.print(); std::cout<<"k1 = "; k1.print();
+        k1 = k1_copy;
+        std::cout<< "= Перемещающее присваивание =\n";
+        k2 = std::move(k1);
+        std::cout<<"k2 = k1"<<std::endl; 
+        std::cout<<"k2 = "; k2.print(); std::cout<<"k1 = "; k1.print();
+        k1 = k1_copy;
+        std::cout<< "= Самоприсваивание присваивание =\n";
+        k1 = k1;
+        std::cout<<"k1 = k1"<<std::endl; std::cout<<"k1 = "; k1.print();
+        k1 = std::move(k1);
+        std::cout<<"k1 = std::move(k1)"<<std::endl; std::cout<<"k1 = "; k1.print();
     }
     catch (const std::exception& e) {
     std::cout << "Ошибка : " << e.what() << "\n";
